@@ -68,3 +68,13 @@ The following table lists the top 10 most important features in determining the 
 Clearly, the most important features to determine a property's price are its size and how many it accomodates. Next, comes the listing type, the level of availability and how much it was reviewed. 
 
 This kind of insight helps us understand for example that property size is more important to some extent that location. Also, it reduces the number of variables that we need to take into consideration when pricing.
+
+## Conclusion
+
+We started with our analysis of pricing from a high level, by looking at trends and seasonality of pricing and availability. This helped us identify the effect of weekends, holidays and so on on those factors.
+
+Then we delved deeper, by training a machine learning model to predict for us an ideal price given different listing features. That was our crystal ball, despite being a bit hazy with the relatively degraded accuracy. Nonetheless, it took us one step closer to identifying the most important factors in pricing.
+
+Finally, we utilized how the model learned to identify those most important factors and that's the most granular level of details that we managed to acquire.
+
+Defnitely, the work can be further improved by utilizing the textual data and analyzing it. Also, including the time factor as a more integral part in the analysis and predictive modeling.
