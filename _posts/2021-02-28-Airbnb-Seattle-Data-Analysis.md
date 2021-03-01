@@ -9,7 +9,7 @@ Airbnb serves guests and hosts whether to list a property or find one that match
 
 ## Introduction
 
-Airbnb revolutionized the industry with its platform by bringing both the hosts and guests directly unto one platform. However, unlike established businesses that work in hospitality, now individuals found themselves as people who running their own business over airbnb. 
+Airbnb revolutionized the industry with its platform by bringing both the hosts and guests directly into one platform. However, unlike established businesses that work in hospitality, now individuals found themselves as people who are running their own business over airbnb. 
 
 Part of a successful business is the right pricing. Therefore, using Airbnb data for Seattle we will try to answer the following business question related to pricing:
 - Is there any trend in house prices and availability, and how can it be explained?
