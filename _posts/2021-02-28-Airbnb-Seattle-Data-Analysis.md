@@ -22,6 +22,7 @@ We will tackle those questions one by one. So let's get started!
 Pricing always changes especially in sectors like tourism and hospitality, and Airbnb listings are no exception. Factors like seasons, holidays, and so on affect both pricing and demand!
 
 We will start by looking at the average listing prices fo each day and plot over a year's period to see how the prices change:
+
 ![_config.yml]({{ site.baseurl }}/images/price-vs-time.png)
 
 We can quicky observe few things from the chart above:
@@ -30,6 +31,7 @@ We can quicky observe few things from the chart above:
 - We can see clear spikes near Valentine's day, spring break, summer break, and a small one near new year
 
 However, we cannot look at pricing without looking at availability:
+
 ![_config.yml]({{ site.baseurl }}/images/availabile-vs-time.png)
 
 This chart is very interesting because it follows the expected logic but at the same time is counterintuitive. We can observe the following:
