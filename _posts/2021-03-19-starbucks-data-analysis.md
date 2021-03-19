@@ -23,7 +23,7 @@ Through this analysis, we will try to answer the following business questions:
 
 We will tackle those questions one by one. So let's get started!
 
-## How did Starbucks customers engage with the different offers?
+## Q1. How did Starbucks customers engage with the different offers?
 Each offer has a lifecycle, and goes through different stages depending on the offer type, from being received to viewed or ignore, to completed. Also, we need to measure the effectivess of an offer. This can be measured in many ways, whether financial, or impact on future purchases, or just the engagement of customers.
 
 For the purpose of this question, we will focus on customer engagement, and how customers interacted with each offer in terms of viewing and completing.
@@ -46,4 +46,36 @@ After all, the offer that seems to have done the best in terms of engagement is 
 The following chart concisely summarizes the lifecycle of those 2 offers:
 ![_config.yml]({{ site.baseurl }}/images/starbucks/journey.png)
 
+This kind of diagrams gives a very good view of how each offer is performing. Of course we can add other measures such as financial, or loyalty, if we have data to support.
 
+## Q2. How did the offers affect or change customer behavior?
+In the first question we looked at how the offers performed in terms of customer engagement. Now, we want to measure if those offers changed the customer behavior. Of course the condition for transactions within an offer is that the offer has been viewed, and completed in the case of bogo and discount. 
+
+We will measure this as follows:
+1. For informational offers, we will check if the duration that users take to make the first purchase after the informational offer is reduced in comparison to the usual duration that customers take between consecutive purchases that are not under any offer
+2. For bogo and discount offers, we will check if the duration between purchase instances for transactions within an offer is different from the duration between normal consecutive transactions that are not within an offer period
+3. Finally, we will check if the there is a statistically significant change in transaction amounts during an offer (bogo or discount) from outside an offer
+
+Those tests will be conducted using a statistical method (z-test), and then we measure the statistical significance of the result.
+
+Let's start with the tests one by one:
+__1. Starting with our test regarding the effect of informational offers:__
+![_config.yml]({{ site.baseurl }}/images/starbucks/info_duration.png)
+
+Only by looking at the chart above and the mean values we can see how different the two samples are. Of course, the z-test confirms that informational offer has an effect. However, it is suprisingly counter-intuitive. Because this suggests that customers take longer time to make a purchase after receiving an informational offer in comparison to the time they usually take between transactions.
+
+Nonetheless, this could be due to the time informational offers are beng set. E.g. late at night, or some time in the weekend. This requires further investigation with business, and complimentary data to shed more light.
+
+__2. Testing the effect of BOGO and discount offers on transaction DURATIONS:__
+![_config.yml]({{ site.baseurl }}/images/starbucks/duration.png)
+
+Clearly, from the mean values we see above and the ztest, during an offer customers do purchase more frequently. I.e. the duration between purchase transactions is reduced!
+
+Of course if needed we can dig deeper to see which specific offer did best
+
+__3. Testing the effect of BOGO and discount offers on transaction AMOUNTS:__
+![_config.yml]({{ site.baseurl }}/images/starbucks/amounts.png)
+
+Again, this clearly shows that during an offer customers spend more per transaction, and the amount difference is statistically significant
+
+## Q3. Can we predict if a customer will interact with an offer? and what are the determining factors?
