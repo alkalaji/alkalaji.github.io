@@ -31,12 +31,15 @@ Each offer has a lifecycle, and goes through different stages depending on the o
 For the purpose of this question, we will focus on customer engagement, and how customers interacted with each offer in terms of viewing and completing.
 
 Starting with the viewing percentage for each offer:
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/viewed.png)
 
 We can notice that 6 out of 10 offers were viewed by around 80% or more of customers which seems very good. However, the offers (bogo_3, discount_1, and discount_4) had less than 50% viewing, which suggests that it did not attract customers as the other ones did.
 
 Then we look at the performance of offers in terms of being viewed and completed, and being completed WITHOUT having been viewed:
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/viewed_completed.png)
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/completed_not_viewed.png)
 
 We notice that around 30% of those who completed bogo_3, discount_1, and discount_4 did it without even viewing the offer. This means that either way customers would have continued with their purchaing habits without the business spending money on those offers. However, this cannot be concluded unless we know the motivation of this offer. It might not be purely financial, there might be loyalty aspects, or some utility function that is used to measure success of an offer
@@ -46,6 +49,7 @@ Furthermore, surprisingly, those three offers (bogo_3, discount_1, and discount_
 After all, the offer that seems to have done the best in terms of engagement is "discount_3". Customers seem to have engaged with it in terms of views, completion, and the relatively lower number of those who viewed it and ignored it. On the other hand, "discount_1" seems to have done the poorest in terms of customer engagement, and being completed without customers even noticing it. 
 
 The following chart concisely summarizes the lifecycle of those 2 offers:
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/journey.png)
 
 This kind of diagrams gives a very good view of how each offer is performing. Of course we can add other measures such as financial, or loyalty, if we have data to support.
@@ -61,21 +65,24 @@ We will measure this as follows:
 Those tests will be conducted using a statistical method (z-test), and then we measure the statistical significance of the result.
 
 Let's start with the tests one by one:
-1. __Starting with our test regarding the effect of informational offers:__
+__1. Starting with our test regarding the effect of informational offers:__
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/info_duration.png)
 
 Only by looking at the chart above and the mean values we can see how different the two samples are. Of course, the z-test confirms that informational offer has an effect. However, it is suprisingly counter-intuitive. Because this suggests that customers take longer time to make a purchase after receiving an informational offer in comparison to the time they usually take between transactions.
 
 Nonetheless, this could be due to the time informational offers are beng set. E.g. late at night, or some time in the weekend. This requires further investigation with business, and complimentary data to shed more light.
 
-2. __Testing the effect of BOGO and discount offers on transaction DURATIONS:__
+__2. Testing the effect of BOGO and discount offers on transaction DURATIONS:__
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/duration.png)
 
 Clearly, from the mean values we see above and the ztest, during an offer customers do purchase more frequently. I.e. the duration between purchase transactions is reduced!
 
 Of course if needed we can dig deeper to see which specific offer did best
 
-3. __Testing the effect of BOGO and discount offers on transaction AMOUNTS:__
+__3. Testing the effect of BOGO and discount offers on transaction AMOUNTS:__
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/amounts.png)
 
 Again, this clearly shows that during an offer customers spend more per transaction, and the amount difference is statistically significant
@@ -89,6 +96,7 @@ For this purpose, we created a dataset containing:
 Then we added a flag of whether each customer viewed and completed the offer. This will be our target for prediction.
 
 This dataset was used to train and evaluate a machine learning model that will try to predict given customer and offer info, whether the customer will view and complete this offer or not
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/ml-model.png)
 
 The built model performed relatively well with an accuracy of around 73%. Of course, we did not rely only on accuracyas it can be prone to biases and imbalance. Therefore, we evaluated the model with f1-score, and it reported a value of 0.68, which is very reasonable given the accuracy.
@@ -96,6 +104,7 @@ The built model performed relatively well with an accuracy of around 73%. Of cou
 This model now enables us to infer whether a customer will engage with an offer or not before sending out the offer.
 
 Finally, let's identify what are the most important features determined by the model that affect whethe a customer will engage with an offer. One way to do that is by looking at features importance:
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/features_imp.png)
 
 We can clearly see that individual attributes are the most important features, followed by offer properties. Those features are:
@@ -111,6 +120,7 @@ We can clearly see that individual attributes are the most important features, f
 - If the offer is of type buy-one-get-one
 
 Now let's look at how those features are correlated with the outcome and with each other. However, we will limit it only to 5 features for ease of visualization:
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/scatterplot.png)
 
 Focusing on the diagonal charts, we can observe the following:
