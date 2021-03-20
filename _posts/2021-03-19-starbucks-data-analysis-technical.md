@@ -8,8 +8,6 @@ Offers are an important tool for engaging your customers, promoting new offering
 
 ![_config.yml](https://s11284.pcdn.co/wp-content/uploads/2019/01/starbucks-customer-holding-coffee-cup-700x466.jpg.webp)
 
-# Starbucks Dataset Analysis
-
 In this report go through the analysis of the data provided by Starbucks simulating customer behavior in response to offers through their mobile app. We follow CRISP-DM to analyze the data and gain insights into how customers interact with those offers. We will also answer the business questions raised in the next section
 
 ## 1. Business understanding
@@ -902,7 +900,7 @@ print_histogram(profile.gender, title='Gender Histogram')
 
 
     
-![png](output_24_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_24_0.png)
     
 
 
@@ -917,7 +915,7 @@ print_histogram(profile.age, title='Age Histogram')
 
 
     
-![png](output_26_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_26_0.png)
     
 
 
@@ -931,7 +929,7 @@ h = profile.boxplot(['age'], showfliers=True, return_type='dict')
 
 
     
-![png](output_28_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_28_0.png)
     
 
 
@@ -947,7 +945,7 @@ print_histogram(profile.year_of_membership, title='year_of_membership histogram'
 
 
     
-![png](output_30_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_30_0.png)
     
 
 
@@ -961,7 +959,7 @@ print_histogram(profile.income, title='Income Histogram')
 
 
     
-![png](output_32_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_32_0.png)
     
 
 
@@ -973,7 +971,7 @@ h = profile.boxplot(['income'], showfliers=True, return_type='dict')
 
 
     
-![png](output_33_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_33_0.png)
     
 
 
@@ -990,7 +988,7 @@ plt.show()
 
 
     
-![png](output_36_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_36_0.png)
     
 
 
@@ -1017,7 +1015,7 @@ plt.show()
 
 
     
-![png](output_38_1.png)
+![_config.yml]({{ site.baseurl }}/images/output_38_1.png)
     
 
 
@@ -1074,7 +1072,7 @@ print_histogram(transcript[transcript.event == 'transaction'].amount)
 
 
     
-![png](output_46_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_46_0.png)
     
 
 
@@ -1089,7 +1087,7 @@ plt.show()
 
 
     
-![png](output_48_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_48_0.png)
     
 
 
@@ -1106,7 +1104,7 @@ plt.show()
 
 
     
-![png](output_50_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_50_0.png)
     
 
 
@@ -1151,7 +1149,7 @@ print_histogram(transcript[transcript.event == 'transaction'].amount)
 
 
     
-![png](output_54_1.png)
+![_config.yml]({{ site.baseurl }}/images/output_54_1.png)
     
 
 
@@ -1770,7 +1768,7 @@ plt.show()
 
 
     
-![png](output_67_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_67_0.png)
     
 
 
@@ -1787,7 +1785,7 @@ print_hor_perc_barplot(x=aggregated_offers_trx_details.view_perc,
 
 
     
-![png](output_69_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_69_0.png)
     
 
 
@@ -1802,7 +1800,7 @@ print_hor_perc_barplot(x=((aggregated_offers_trx_details.is_viewed - aggregated_
 
 
     
-![png](output_70_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_70_0.png)
     
 
 
@@ -1817,7 +1815,7 @@ print_hor_perc_barplot(x=aggregated_offers_trx_details.view_complete_perc[:8],
 
 
     
-![png](output_71_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_71_0.png)
     
 
 
@@ -1834,7 +1832,7 @@ print_hor_perc_barplot(x=((aggregated_offers_trx_details.is_completed-aggregated
 
 
     
-![png](output_72_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_72_0.png)
     
 
 
@@ -1855,13 +1853,13 @@ plot_sankey('discount_1', aggregated_offers_trx_details)
 
 
     
-![svg](output_75_0.svg)
+![_config.yml]({{ site.baseurl }}/images/output_75_0.svg)
     
 
 
 
     
-![svg](output_75_1.svg)
+![_config.yml]({{ site.baseurl }}/images/output_75_1.svg)
     
 
 
@@ -1899,7 +1897,7 @@ compare_two_samples(raw_without_offer_trx_durations.trx_duration,
 
 
     
-![png](output_80_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_80_0.png)
     
 
 
@@ -1933,7 +1931,7 @@ compare_two_samples(raw_without_offer_trx_durations.trx_duration,
 
 
     
-![png](output_83_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_83_0.png)
     
 
 
@@ -1967,7 +1965,7 @@ compare_two_samples(raw_without_offer_trx_amounts.trx_amount,
 
 
     
-![png](output_86_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_86_0.png)
     
 
 
@@ -2197,7 +2195,7 @@ plt.show()
 
 
     
-![png](output_100_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_100_0.png)
     
 
 
@@ -2210,7 +2208,7 @@ plt.show()
 
 
     
-![png](output_101_0.png)
+![_config.yml]({{ site.baseurl }}/images/output_101_0.png)
     
 
 
@@ -2386,4 +2384,3 @@ prediction_dataset.head()
 ```python
 
 ```
-
