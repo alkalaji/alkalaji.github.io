@@ -7,7 +7,7 @@ Offers are an important tool for engaging your customers, promoting new offering
 
 ![_config.yml](https://s11284.pcdn.co/wp-content/uploads/2019/01/starbucks-customer-holding-coffee-cup-700x466.jpg.webp)
 
-## Project Introduction
+## Project Overview
 
 Starbucks is the world's largest coffehouse chain in the world. With thousands of stores, and millions of customers, it is important to engage with your customers and understand them. Therefore, Starbucks has an application that makes it easier to know customers better, make it easier for them to order, and to send offers.
 
@@ -34,21 +34,31 @@ With the outlined challenges that we have, and using the simulated data provided
 #### 1. _How did Starbucks customers engage with the different offers?_ 
 Or put another way, we want to know how our offers performed, the level of engagement they had, and whether they had some utility.
 
+__Methodology:__ We will build an offer lifecycle, or a customer journey through an offer, if we look at it from the other way around. For Each offer, we will identify all individual transactions that were targetd with that offer. Then we capture all interaction events (receiving, viewing, completing, or ignoring) an offer. After that we calculate percentages for each event types for each offer.
+
 #### 2. _How did the offers affect or change customer behavior?_ 
 This differs by offer type, and the change in behavior could be in terms of spending or frequency of transactions. 
 
+__Methodology:__ First of all, we will identify all customer transactions that are not within an offer period. From that we get transaction amounts. Then of those, we identify the consecutive transactions and calculate the time between transactions. 
+
+The second part applies to BOGO and discount offers, we do the same but for transactions within an offer where we calculate transaction amounts and time between consecutive transactions.
+
+For informational offers, we calculate the time between the first transaction that the customer commits after viewing the offer and the previous transaction. The idea is to see whether the information offer urged the customer to perform a transaction.
+
+Finally, we use a statistical test, specifically z-test, to assess whether there is a statistical significance in the duration between transactions within and without offers on one hand, and the transaction amount on the other hand.
+
 #### 3. _Can we predict if a customer will interact with an offer? and what are the determining factors?_ 
-We need to predict given some user info and offer info whether this combination will give a positive outcome. Meaning that offer x suits person y. Furthermore, identify the features are most important to consider when targeting a customer with an offer
+We need to predict given some user info and offer info whether this combination will give a positive outcome. Meaning that offer x suits person y. Furthermore, identify the features are most important to consider when targeting a customer with an offer.
+
+__Methodology:__ We will start by building a dataset that has customer information, some spending info and offer information. The target variable would be whether the offer was viewed and completed by the customer. This is what we want to train our model on. Then after preparing and processig the data, we spilt to train a random forest classifier to predict whether given information about a custmer and a potential offer what is the likelihood of the customer engagng with the offer.
 
 We will tackle those questions one by one throughout the analysis. But before that we need to define the metrics that will be used to assess viability or success of our proposed solutions.
 
-## Methodology and Metrics
+## Metrics
 
-Following is the methodology through which will follow to answer each of the questions in our problem statement:
+Following are the metrics through which will assess the methodologies and results of the questions in our problem statement:
 #### 1. _How did Starbucks customers engage with the different offers?_
 For each offer, we will identify all individual transactions that were targetd with that offer. Then we will calculate different metrics.
-
-__Methodology:__ We will build an offer lifecycle, or a customer journey through an offer, if we look at it from the other way around. For Each offer, we will identify all individual transactions that were targetd with that offer. Then we capture all interaction events (receiving, viewing, completing, or ignoring) an offer. After that we calculate percentages for each event types for each offer.
 
 __Metrics:__ The percentages that will be calculated will be our metrics to assess how the offers performed. Namely, we will have the following metrics to asess, for each offer:
 * Viewing percentage: What percentage has the offer been viewed. Higher value means that at least the offer reached the customer
@@ -69,22 +79,12 @@ __<div align="center"> viewed_and_ignored% = (views_count-viewed_and_completed_c
 #### 2. _How did the offers affect or change customer behavior?_ 
 Here we go through all transactions to identify those within an offer and those outside. Then we statistically test if there is some significant differnece between the two.
 
-__Methodology:__ First of all, we will identify all customer transactions that are not within an offer period. From that we get transaction amounts. Then of those, we identify the consecutive transactions and calculate the time between transactions. 
-
-The second part applies to BOGO and discount offers, we do the same but for transactions within an offer where we calculate transaction amounts and time between consecutive transactions.
-
-For informational offers, we calculate the time between the first transaction that the customer commits after viewing the offer and the previous transaction. The idea is to see whether the information offer urged the customer to perform a transaction.
-
-Finally, we use a statistical test, specifically z-test, to assess whether there is a statistical significance in the duration between transactions within and without offers on one hand, and the transaction amount on the other hand.
-
 __Metrics:__ Given that we are using z-test we will on two main values:
 * p-value: where if p-value < 0.05, then there is a statistically significant difference. Meaning that there is a significant impact by the offer on customer behavior
 * z-score: This is what gives us the magnitude of difference in terms of standard deviations difference, and whether it is positive or negative
 
 #### 3. _Can we predict if a customer will interact with an offer? and what are the determining factors?_ 
 In comparison to the previous one, this is straight forward.
-
-__Methodology:__ We will start by building a dataset that has customer information, some spending info and offer information. The target variable would be whether the offer was viewed and completed by the customer. This is what we want to train our model on. Then after preparing and processig the data, we spilt to train a random forest classifier to predict whether given information about a custmer and a potential offer what is the likelihood of the customer engagng with the offer.
 
 __Metrics:__ Since this is a classification problem we will be looking at the following metrics:
 * Accuracy: to get an overall sense of how the model has preformed. However, this is not a conclusive metric especially with imbalance
