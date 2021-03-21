@@ -197,14 +197,26 @@ Focusing on the diagonal charts, we can observe the following:
 - Social channel shows a positive correlation
 - The higher the income the more likely someone seems to participate in an offer
 
-## Conclusion
+## Justification
+Looking back at the most important decisions we have made throughtout this analysis, we can highlight the following:
+- The rigorous function "process_transactions", despite how big the function is, I preferred to keep it all in one function to reduce the overall number of loops. Furthermore, there were so many conditions to keep track of to qualify a transaction to be considered as part of an offer, or just a normal transaction, and the consecutiveness of transactions. The level of detail that this function provides can open up multiple other areas to explore in the data.
+- For question two we use choose z-test for the following reasons:
+  * We have a very large sample size. Each sample consists of multiple thousand observations
+  * The data points are independent from each other
+  * Given the large sample size, we can relax the condition or assumption that the data must benormally distributed
+- The rationale behind our decisions for question 3 are as follows:
+  * I chose Random Forest because it is less prone to over fitting, due to the way it splits the data and builds multiple trees. Also, does not require normalizing or regularizing the data before feeding it into the model. Finally, does not necessarily require data bining, since it can decide on different ranges for each branch or split
+  * We use GridSearchCV, first of all to find a better set of parameters for our model. We could have gobe randomized search for faster results, but the calculation was affordable with gridsearch. Also very importantly, we wanted to make use of the cross-validation that it does so that we ensure that we do not overfit our model
+  * Regarding evaluation metrics of the model, we did not only rely on accuracy, but we also looked at f1-score which takes into consideration precision and recall, and works better for datasets with imbalanced labels 
+
+## Conclusion and Reflections
 
 In this exercise we analyzed the customers and offers data from Starbucks. We tried to answer the different business questions.
 
-We started our analysis by trying to look at how customers interacted with the different kinds of offer. We measured what we called customer engagement. Then we looked at the interaction with each offer an offer lifecycle and a customer journey.
+We started our analysis by trying to look at how customers interacted with the different kinds of offer. We measured what we called customer engagement. Then we looked at the interaction with each offer an offer lifecycle and a customer journey. We also identified the best performing offers and the least peforming according to our definition.
 
-Then we looked at the problem from another angle. We tried to see how offers impacted customer behavior. We followed a statistical method to assess the significance of this effect, and we found the indeed offers affect customer spending and the frequency of transactions.
+Then we looked at the problem from another angle. We tried to see how offers impacted customer behavior. We followed a statistical method to assess the significance of this effect, and we found the indeed offers affect customer spending and the frequency of transactions. We found that information offers seemed to have a negative impact on the duration until next transaction. On the other hand, BOGO and discount offers increase the average transaction amound and the frequency of transactions during an offer.
 
-Finally, we built a predictive model to help us identify whether an offer would suit a certain customer. Also, the model gave us an insgiht at what the important features are in determining whether a customer will enage with an offer or not. 
+Finally, we built a predictive model to help us identify whether an offer would suit a certain customer. It had a reasonable accuracy with around 70%. Also, the model gave us an insgiht at what the important features are in determining whether a customer will enage with an offer or not. The two most important indicators where average customer spending and years of membership.
 
-The work can be further improved with some extra sources of data such as item pricing, or through some further engineering of some of the features.
+The work can be further improved with some extra sources of data such as item pricing, or through some further engineering of some of the features. Also, we can model the whole data and problems as a time series problem with sequences of transaction. However, this would require us have some further information about the time of transactions to correlate with weekdays, weekends, and time.
