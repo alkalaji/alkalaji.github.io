@@ -91,6 +91,223 @@ __Metrics:__ Since this is a classification problem we will be looking at the fo
 * F1 score: since this metric takes precision and recall into consideration. So it is necessary to look at this metric along with accuracy
 * Precision and recall: just to get an idea of where might be some bias or other fitting issues with the model
 
+## Data Understanding
+**Note: The source of the description below comes from the provided information about the datasets**
+
+The data that will be used is provided in the following three files:
+* portfolio.json - containing offer ids and meta data about each offer (duration, type, etc.)
+* profile.json - demographic data for each customer
+* transcript.json - records for transactions, offers received, offers viewed, and offers completed
+
+Here is the schema and explanation of each variable in the files. We also look at the head of each of the three data files, their shape and if there is any missing values
+
+**portfolio.json**
+* id (string) - offer id
+* offer_type (string) - type of offer ie BOGO, discount, informational
+* difficulty (int) - minimum required spend to complete an offer
+* reward (int) - reward given for completing an offer
+* duration (int) - time for offer to be open, in days
+* channels (list of strings)
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/1.png)
+
+**profile.json**
+* age (int) - age of the customer 
+* became_member_on (int) - date when customer created an app account
+* gender (str) - gender of the customer (note some entries contain 'O' for other rather than M or F)
+* id (str) - customer id
+* income (float) - customer's income
+
+It was mentioned that missing age values where encded as 118 in the dataset. Hence, we will set those values to nan
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/2.png)
+
+Only profile dataset contains missing values. We can see that around 12.8% of demographics data is missing. We will decide how to handle this as we have a further look at the data
+
+**transcript.json**
+* event (str) - record description (ie transaction, offer received, offer viewed, etc.)
+* person (str) - customer id
+* time (int) - time in hours since start of test. The data begins at time t=0
+* value - (dict of strings) - either an offer id or transaction amount depending on the record
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/3.png)
+
+## Data preparation and exploration
+In this section we will perform the following data processing steps on each dataset:
+
+### a. "portfolio" dataset
+The portfolio data is quite straight forward having only 10 rows corresponding to the 10 offers. We do some basic feature engineering. This makes it easier for any modelling step later on. We do the following steps:
+- One-hot-encode channels
+- One-hot-encode offers
+- Give code names for offers for easier readability
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/4.png)
+
+Then we look at how many times each channel was used and the offer types:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/5.png)
+
+We can see that email channel is used with all offers, so it loses value in terms of modelling, because it does not carry any discriminatory value! 
+
+This should not be confused with the potential importance of it as a channel, but again not for modelling purposes.
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/6.png)
+
+Clearly we have 4 buy-one-get-one, 4 discount offers, and 2 informational
+
+### b. "profile" dataset
+First, for preprocessing we will perform the following steps:
+- Convert 'became_member_on' to datetime
+- Replace 'became_member_on' with 'year_of_membership'
+- Replace missing gender values with 'U' for unknown
+
+#### Looking at the dstribution of each column, and seeing if there are outliers within the data
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/7.png)
+
+We will decide what to do with the missing values denoted as 'U' later on. 
+However, looking at M and F values, there is some imbalance, but it is not severe. However we will have to be careful when splitting the data and modelling
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/8.png)
+
+The data seems to be normally distributed with some skewness. One reason is that the application contains ages starting from 18 years old. Then we look at the boxplot to see if there are any outliers:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/9.png)
+
+We don't see any extreme valus or severe skewness other than slight skewness to the right. 
+Also, from the above boxplot, we can see that 50% of our customers fall between ages around 42 and 65
+
+Then we look at Histogram for our newly created feature 'year_of_membership'
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/10.png)
+
+We can see that 50% of customers are in their first year of membership. 40% are in their 2nd or 3rd year
+
+Next, we look at Income histogram ignoring nan values:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/11.png)
+
+Now we examine for outliers:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/12.png)
+
+Again here we don't outliers and there is some skewness slightly to the right. 50% of customers have an income between 50k to 80k.
+
+#### Data correlations
+Now, we can start looking at the correlation matrix for profile features
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/13.png)
+
+The correlation heatmap suggests some positive correlation between age and income, which is expected and can be seen better in the next set of charts. However, neither age nor income show correlation with year_of_membership feature.
+
+Then we look at the scatterplot matrix to gain further insights
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/14.png)
+
+Given the charts above, I have the following comments:
+- The age vs income charts show a positive correlation. However, clearly it shows how synthetic this dataset is. As in real life we won't have those clear borders.
+- Male income is right skewed
+- For higher incomes, it seems that female customers or more prominent
+- There is nothing much noticeable regarding O and null gender records distributions. Therefore, we will drop records with nan value for demographic info
+
+##### As mentioned, we will be removing customer records with missing data. However, better way to do it is to check using a statistical test specifically the distribution of those records with missing values vs with non-missing values and see if there is any statistical significance in the difference between the two
+
+## c. "transcript" dataset
+This is where the bulk of the preprocessing work was done as we were deling with the transactions. First we did some initial preprocessing steps by replacing 'amount' column and creating 3 columns: offer_id, amount, reward
+
+#### Looking at the dstribution of each column, and seeing if there are outliers within the data
+
+Starting with transaction amounts
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/15.png)
+
+The shape of this histogram suggests that we have some extreme values. Therefore, we create a boxplot
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/16.png)
+
+We can clearly see that there are extreme values in the data. Having another look without those extreme values:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/17.png)
+
+Given the a value of 45 to be a reasonable cutoff value for transaction amount, we found that there are 863 extreme values (above 45). Thereforem, given the small number of outliers in comparison to 306534 transaction, we will drop those values. Now we have another look at the histogram:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/18.png)
+
+This diagram has an interesting shape. I believe it is mostly due to the pricing of items at Starbucks, and the bump in the chart could be attributed to combination of items purchased. To confirm or refute some pricing data would be required.
+
+#### Data correlations
+To get a better picture, we look at the correlation between the different features. However, before that we join the transactions with some socio-demographic data:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/19.png)
+
+From the above correlation matrix we can observe the follwing:
+- There's a very strong positive correlation between income and the transaction amount mean value
+- However, there's a negative correlation with less magnitude between income and number of transactions
+- The year of membership feature shows a positive correlation with the umber of transactions (remomber that this transactions data is for 1 month only)
+- Age is positively correlated with the mean transaction amount value. This is expected since we observed earlier that age is positively correlated with income positively
+
+We take things a tep further by looking at the scatterplot matrix:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/20.png)
+
+The scatterplot matrix above highlights some of the observations we noticed in the correlation matrix above, in addition to highlighting the following:
+- Male total transaction amount is extremely right skewed, whereas for female customers it shows less skewness. We observe that a majority of the male customers fall in the lower end of the total amount spent spectrum
+- The same applies to avergae transaction amount where male are the lower end of the spectrum and females exceeding them on the higher end
+- When it come to number of transactions the distribution seems to be very similar. The higher shaded area for males can be attributed to the data imbalance
+- Regarding users which are not labelled as 'M' or 'F', this includes 'O' and nan, most transactions amount and count are on the very lower end of the spectrum
+
+## 4. Data Analysis, modelling, and evaluation
+In this section we will analyze the data in order to answer the different business questions that were posed earlier. However, before we get to the questions one by one, we will need to process transcript data to identify how customers interact with the offers, and how offers affect customer behavior.
+
+For that we built a rigorous function to process transactions. The logic in the 'process_transactions' function produces two main data frames, and 5 other data frames containing raw transaction metrics:
+1. __offers_trx_details:__ This DataFrame is concerned with offers, how users interact with them, and the transactions that we assume are associated with them, as follows:
+    - For all offers received we calculate how long it took to view the offer and how long to complete if applicable
+    - For each person for each offer (bogo or discount) we get all the transactions that happened between offer reception and completion. For those specific transactions we calculate avg time between transactions, mean transaction amount, and how many
+    - For informational offers we calculate the time from last transaction before the offer was viewed to the first transaction after the offer is viewed
+2. __normal_trx_details:__ Those are transactions that took place outside the conditions outlined above. So they do not fall between an offer view and completion
+3. __raw_within_offer_trx_amounts:__ individual transaction amounts that took place during an offer
+4. __raw_within_offer_trx_durations:__ duration between consecutive transactions during an offer
+5. __raw_first_trx_from_last_durations:__ the duration between first commited transaction after receiving an information offer and last transaction
+6. __raw_without_offer_trx_amounts:__ individual transaction amounts that took place outside any offer
+7. __raw_without_offer_trx_durations:__ duration between consecutive transactions that took place outside offers
+
+The columns description for each of the two main dataframes is as follows:
+1. offers_trx_details:
+    - __person_id__: Person id
+    - __offer_id__: Offer id
+    - __viewed_time__: the time difference between viewing and offer and receiving it. If not viewed it would be nan
+    - __completed_time__: the time difference between completing an offer and viewing it, in case it was viewed. If not, then from receiving it. If not completed it would be nan
+    - __first_trx_time_from_last_trx__: the time from last transaction before the offer was viewed to the first transaction after the offer is viewed
+    - __trx_count__: # of transactions between view/reception and completion
+    - __avg_trx_amount__: avergae transaction amount for the aforementioned transactions
+    - __avg_time_btwn_trx__: average time between transactions for the aforementioned transactions
+2. normal_trx_details:
+    - __person_id__: Person id
+    - __trx_count__: # of transactions that are not between view/reception and completion
+    - __avg_trx_amount__: avergae transaction amount for the aforementioned transactions
+    - __avg_time_btwn_consec_trx__: average time between only consecutive transactions for the aforementioned transactions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/xxxx.png)
 
 
 ## Q1. How did Starbucks customers engage with the different offers?
