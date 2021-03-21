@@ -7,7 +7,7 @@ Offers are an important tool for engaging your customers, promoting new offering
 
 ![_config.yml](https://s11284.pcdn.co/wp-content/uploads/2019/01/starbucks-customer-holding-coffee-cup-700x466.jpg.webp)
 
-## Project Overview
+## 1. Project Overview
 
 Starbucks is the world's largest coffehouse chain in the world. With thousands of stores, and millions of customers, it is important to engage with your customers and understand them. Therefore, Starbucks has an application that makes it easier to know customers better, make it easier for them to order, and to send offers.
 
@@ -22,13 +22,13 @@ The data contains scio-demographic information about customers, the transactions
 
 In this writeup, we document the challenges and motivation behind this problem. Then, we define a a problem statement that will guide our efforts throughout the analysis. After that, we outline the methodology that we will use to solve the defined problem, and what metrics we will use assess the outcomes. Overall, we follow the CRISP-DM approach in our analysis.
 
-## Challenge and Motivation
+## 2. Challenge and Motivation
 
 Given the millions of customers and the limitless options of offers, it is a challenge to know which offer to send to what customer. Furthermore, sending the wrong offer to a customer might impact customer's loyalty, or change the perception of a customer into thinking that those offers are more like spam. 
 
 Even from a financial perspective, usually an offer means cost for Starbucks, whether directly or indirectly as outlined above. This uncertainty is what makes this problem challenging, and gives us a great motive to tackle in order to know what to send to whom and understand the dynamics of offer and customers and how they interact and affect each other.
 
-## Problem Statement
+## 3. Problem Statement
 
 With the outlined challenges that we have, and using the simulated data provided by Starbucks, we need to answer the following question:
 #### 1. _How did Starbucks customers engage with the different offers?_ 
@@ -54,7 +54,7 @@ __Methodology:__ We will start by building a dataset that has customer informati
 
 We will tackle those questions one by one throughout the analysis. But before that we need to define the metrics that will be used to assess viability or success of our proposed solutions.
 
-## Metrics
+## 4. Metrics
 
 Following are the metrics through which will assess the methodologies and results of the questions in our problem statement:
 #### 1. _How did Starbucks customers engage with the different offers?_
@@ -91,7 +91,7 @@ __Metrics:__ Since this is a classification problem we will be looking at the fo
 * F1 score: since this metric takes precision and recall into consideration. So it is necessary to look at this metric along with accuracy
 * Precision and recall: just to get an idea of where might be some bias or other fitting issues with the model
 
-## Data Understanding
+## 5. Data Understanding
 **Note: The source of the description below comes from the provided information about the datasets**
 
 The data that will be used is provided in the following three files:
@@ -132,7 +132,7 @@ Only profile dataset contains missing values. We can see that around 12.8% of de
 
 ![_config.yml]({{ site.baseurl }}/images/starbucks/3.png)
 
-## Data preparation and exploration
+## 6. Data preparation and exploration
 In this section we will perform the following data processing steps on each dataset:
 
 ### a. "portfolio" dataset
@@ -212,7 +212,7 @@ Given the charts above, I have the following comments:
 
 ##### As mentioned, we will be removing customer records with missing data. However, better way to do it is to check using a statistical test specifically the distribution of those records with missing values vs with non-missing values and see if there is any statistical significance in the difference between the two
 
-## c. "transcript" dataset
+### c. "transcript" dataset
 This is where the bulk of the preprocessing work was done as we were deling with the transactions. First we did some initial preprocessing steps by replacing 'amount' column and creating 3 columns: offer_id, amount, reward
 
 #### Looking at the dstribution of each column, and seeing if there are outliers within the data
@@ -256,7 +256,7 @@ The scatterplot matrix above highlights some of the observations we noticed in t
 - When it come to number of transactions the distribution seems to be very similar. The higher shaded area for males can be attributed to the data imbalance
 - Regarding users which are not labelled as 'M' or 'F', this includes 'O' and nan, most transactions amount and count are on the very lower end of the spectrum
 
-## 4. Data Analysis, modelling, and evaluation
+## 7. Data Analysis, modelling, and evaluation
 In this section we will analyze the data in order to answer the different business questions that were posed earlier. However, before we get to the questions one by one, we will need to process transcript data to identify how customers interact with the offers, and how offers affect customer behavior.
 
 For that we built a rigorous function to process transactions. The logic in the 'process_transactions' function produces two main data frames, and 5 other data frames containing raw transaction metrics:
@@ -457,7 +457,7 @@ Focusing on the diagonal charts, we can observe the following:
 - Social channel shows a positive correlation
 - The higher the income the more likely someone seems to participate in an offer
 
-## Justification
+## 8. Justification
 Looking back at the most important decisions we have made throughtout this analysis, we can highlight the following:
 - The rigorous function "process_transactions", despite how big the function is, I preferred to keep it all in one function to reduce the overall number of loops. Furthermore, there were so many conditions to keep track of to qualify a transaction to be considered as part of an offer, or just a normal transaction, and the consecutiveness of transactions. The level of detail that this function provides can open up multiple other areas to explore in the data.
 - For question two we use choose z-test for the following reasons:
@@ -469,7 +469,7 @@ Looking back at the most important decisions we have made throughtout this analy
   * We use GridSearchCV, first of all to find a better set of parameters for our model. We could have gobe randomized search for faster results, but the calculation was affordable with gridsearch. Also very importantly, we wanted to make use of the cross-validation that it does so that we ensure that we do not overfit our model
   * Regarding evaluation metrics of the model, we did not only rely on accuracy, but we also looked at f1-score which takes into consideration precision and recall, and works better for datasets with imbalanced labels 
 
-## Conclusion and Reflections
+## 9. Conclusion and Reflections
 
 In this exercise we analyzed the customers and offers data from Starbucks. We tried to answer the different business questions.
 
