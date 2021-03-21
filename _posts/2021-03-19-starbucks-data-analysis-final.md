@@ -287,33 +287,20 @@ The columns description for each of the two main dataframes is as follows:
     - __avg_trx_amount__: avergae transaction amount for the aforementioned transactions
     - __avg_time_btwn_consec_trx__: average time between only consecutive transactions for the aforementioned transactions
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-![_config.yml]({{ site.baseurl }}/images/starbucks/xxxx.png)
-
+Now we can start the analysis, modeling and evaluation for each one of our questions.
 
 ## Q1. How did Starbucks customers engage with the different offers?
 Each offer has a lifecycle, and goes through different stages depending on the offer type, from being received to viewed or ignore, to completed. Also, we need to measure the effectivess of an offer. This can be measured in many ways, whether financial, or impact on future purchases, or just the engagement of customers.
 
 For the purpose of this question, we will focus on customer engagement, and how customers interacted with each offer in terms of viewing and completing.
+
+We will start by creating an aggregated dataframe from 'aggregated_offers_trx_details'. For each offer we will calculate the number of receipients, views, completion, or lack thereof. We create offer level aggregation for the transaction details metrics related to:
+- Vieweing counts and percentages
+- Completion counts and percentages
+- Transaction amounts
+- Duration between transactions
+
+Now we create a bunch of charts to look at the different metrics mentioned above:
 
 Starting with the viewing percentage for each offer:
 
@@ -327,11 +314,17 @@ Then we look at the performance of offers in terms of being viewed and completed
 
 ![_config.yml]({{ site.baseurl }}/images/starbucks/completed_not_viewed.png)
 
-We notice that around 30% of those who completed bogo_3, discount_1, and discount_4 did it without even viewing the offer. This means that either way customers would have continued with their purchaing habits without the business spending money on those offers. However, this cannot be concluded unless we know the motivation of this offer. It might not be purely financial, there might be loyalty aspects, or some utility function that is used to measure success of an offer
+We notice that around 30% of those who completed bogo_3, discount_1, and discount_4 did it without even viewing the offer. This means that either way customers would have continued with their purchaing habits without the business spending money on those offers. However, this cannot be concluded unless we know the motivation of this offer. It might not be purely financial, there might be loyalty aspects, or some utility function that is used to measure success of an offer.
 
-Furthermore, surprisingly, those three offers (bogo_3, discount_1, and discount_4) that were viewed the least (less than 50%), are the ones that were completed without being viewed the most. This is unclear and could be due to the way the data was synthesized or some other factors that require clarification from business, because the difficulty of those offers is above average
+Furthermore, surprisingly, those three offers (bogo_3, discount_1, and discount_4) that were viewed the least (less than 50%), are the ones that were completed without being viewed the most. This is unclear and could be due to the way the data was synthesized or some other factors that require clarification from business, because the difficulty of those offers is above average.
 
 After all, the offer that seems to have done the best in terms of engagement is "discount_3". Customers seem to have engaged with it in terms of views, completion, and the relatively lower number of those who viewed it and ignored it. On the other hand, "discount_1" seems to have done the poorest in terms of customer engagement, and being completed without customers even noticing it. 
+
+To put it all together, from the charts above we can observe the following:
+- 6 out of 10 offers were viewed by around 80% or more of customers which seems very good
+- Around 30% of those who completed bogo_3, discount_1, and discount_4 did it without even viewing the offer. This means that either way customers would have continued with their purchaing habits without the business spending money on those offers. However, this cannot be concluded unless we know the motivation of this offer. It might not be purely financial, there might be loyalty aspects, or some utility function that is used to measure success of an offer
+- Surprisingly, those three offers (bogo_3, discount_1, and discount_4) that were viewed the least (less than 50%), are the ones that were completed without being viewed the most. This is unclear and could be due to the way the data was synthesized or some other factors that require clarification from business, because the difficulty of those offers is above average
+- The offer that seems to have done the best in terms of engagement is "discount_3". Customers seem to have engaged with it in terms of views, completion, and the relatively lower number of those who viewed it and ignored it
 
 The following chart concisely summarizes the lifecycle of those 2 offers:
 
@@ -347,10 +340,17 @@ We will measure this as follows:
 2. For bogo and discount offers, we will check if the duration between purchase instances for transactions within an offer is different from the duration between normal consecutive transactions that are not within an offer period
 3. Finally, we will check if the there is a statistically significant change in transaction amounts during an offer (bogo or discount) from outside an offer
 
-Those tests will be conducted using a statistical method (z-test), and then we measure the statistical significance of the result.
+Those tests will be conducted using z-test, and then we measure the statistical significance of the result. We choose z-test for the following reasons:
+- We have a very large sample size
+- The data points are independent from each other
+- Even though ideally the samples should have a normal distribution, given the large sample size this should be accepted
 
 Let's start with the tests one by one:
 __1. Starting with our test regarding the effect of informational offers:__
+
+We define our hypotheses:
+- __H0:__ The informational offer _does NOT_ have an effect on the duration customers take until their next purchase
+- __H1:__ The informational offer _DOES_ have an effect on the duration customers take until their net purchase
 
 ![_config.yml]({{ site.baseurl }}/images/starbucks/info_duration.png)
 
@@ -360,6 +360,10 @@ Nonetheless, this could be due to the time informational offers are beng set. E.
 
 __2. Testing the effect of BOGO and discount offers on transaction DURATIONS:__
 
+AGaine we define the hypotheses for our statistical test:
+- __H0:__ The BOGO and discout offers _DO NOT_ have an effect on the duration between customer's consecutive purchase instances during an offer
+- __H1:__ The BOGO and discout offers _DO_ have an effect on the duration between customer's consecutive purchase instances during an offer
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/duration.png)
 
 Clearly, from the mean values we see above and the ztest, during an offer customers do purchase more frequently. I.e. the duration between purchase transactions is reduced!
@@ -368,9 +372,18 @@ Of course if needed we can dig deeper to see which specific offer did best
 
 __3. Testing the effect of BOGO and discount offers on transaction AMOUNTS:__
 
+For our final test, we define the hypotheses:
+- __H0:__ The BOGO and discout offers _DO NOT_ have an effect on the purchase transaction amount during an offer
+- __H1:__ The BOGO and discout offers _DO_ have an effect on the purchase transaction amount during an offer
+
 ![_config.yml]({{ site.baseurl }}/images/starbucks/amounts.png)
 
-Again, this clearly shows that during an offer customers spend more per transaction, and the amount difference is statistically significant
+Again, this clearly shows that during an offer customers spend more per transaction, and the amount difference is statistically significant.
+
+To summarise:
+- Informational offers seem to cause customers to take longer time to make a purchase after receiving an informational offer in comparison to the time they usually take between transactions
+- During an offer (BOGO, or discount) customers do purchase more frequently. I.e. the duration between purchase transactions is reduced
+- During an offer (BOGO, or discount) customers spend more per transaction, and the amount difference is statistically significant
 
 ## Q3. Can we predict if a customer will interact with an offer? and what are the determining factors?
 For this purpose, we created a dataset containing:
@@ -378,13 +391,43 @@ For this purpose, we created a dataset containing:
 - Offer details
 - Customer usual spending on transactions
 
-Then we added a flag of whether each customer viewed and completed the offer. This will be our target for prediction.
+To build this dataset, we joined data from:
+- profile
+- portfolio
+- normal_trx_details
+- offers_trx_details
+
+Then we performed one-hot encoding for categorical features such as gender, and removed the irrelevant columns for modelling such as ids and some other features that won'e be used in the model. Also, since I will be using a random forest classifier, I did not normalize the data, and decided not to got with binning the values. After that, we added a flag of whether each customer viewed and completed the offer. This will be our target for prediction.
 
 This dataset was used to train and evaluate a machine learning model that will try to predict given customer and offer info, whether the customer will view and complete this offer or not
 
 ![_config.yml]({{ site.baseurl }}/images/starbucks/ml-model.png)
 
-The built model performed relatively well with an accuracy of around 73%. Of course, we did not rely only on accuracyas it can be prone to biases and imbalance. Therefore, we evaluated the model with f1-score, and it reported a value of 0.68, which is very reasonable given the accuracy.
+We started with a random forest model with the default parameters, e.g.:
+- 'n_estimators': 100
+- 'min_samples_leaf': 1
+- 'min_samples_split': 2
+
+The reported performance metrics were:
+- Accuracy: 0.70
+- F1 score: 0.65
+- Precision: 0.65
+- Recall: 0.64
+
+This is reasonable given that we did not configure any prameters. The f1-score and precision and recall suggest that the model did not over fit despite the slight imbalance in labels. However, we will try to improve the performance of the model by tuning the parameters. We will use GridSearchCV to search through a different parameters and perform cross validation to make sure that the result we got was not a fluke and that our model will generalize well.
+
+The parameter grid of our search was:
+
+![_config.yml]({{ site.baseurl }}/images/starbucks/21.png)
+
+The built model has slightly improved and performed relatively well with an accuracy of around 73%. Of course, again we did not rely only on accuracy it can be prone to biases and imbalance. Therefore, we evaluated the model with f1-score, and it reported a value of 0.68, which is very reasonable given the accuracy.
+
+The parameters for our best model are:
+- 'max_depth': 10
+- 'max_features': 'auto'
+- 'min_samples_leaf': 2
+- 'min_samples_split': 2
+- 'n_estimators': 200
 
 This model now enables us to infer whether a customer will engage with an offer or not before sending out the offer.
 
